@@ -2,8 +2,14 @@ package com.apifinance.apirestfinance.model;
 
 public class Validations {
 
+
+    /**
+     * Valida el nombre de usuario, debe estar compuesto por sólo letras
+     * @param name
+     * @return
+     */
     public static boolean validateName(String name){
-        return name.matches("^[A-Za-z].*$");
+        return name.matches("^[a-zA-Z]{2,}$");
     }
 
     public static boolean validateEmail(String email){

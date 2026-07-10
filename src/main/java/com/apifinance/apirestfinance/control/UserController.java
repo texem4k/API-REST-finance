@@ -3,6 +3,10 @@ package com.apifinance.apirestfinance.control;
 import com.apifinance.apirestfinance.model.User;
 import com.apifinance.apirestfinance.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +18,7 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
+    private Pageable pageable = PageRequest.of(0, 10);
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -25,8 +30,8 @@ public class UserController {
     }
 
     @GetMapping("/userlist")
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public Page<User> getAllUsers() {
+        return userService.getAllUsers(pageable);
     }
 
     @GetMapping("/user-id")

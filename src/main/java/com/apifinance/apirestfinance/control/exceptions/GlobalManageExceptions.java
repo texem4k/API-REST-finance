@@ -1,4 +1,4 @@
-package com.apifinance.apirestfinance.service;
+package com.apifinance.apirestfinance.control.exceptions;
 
 import com.google.gson.JsonObject;
 import org.springframework.http.HttpStatus;
@@ -63,6 +63,19 @@ public class GlobalManageExceptions extends RuntimeException {
         obj.addProperty("code", "User password error");
         obj.addProperty("title", "Contraseña no válida");
         obj.addProperty("detail", "La contraseña introducida no es válida, ");
+        obj.addProperty("timestamp", LocalDateTime.now().toString());
+
+        return new ResponseEntity<>(obj.toString(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(UserPasswordError.class)
+    public ResponseEntity<String> manageTransactionDetailsError(TransactionDetailsError ex) {
+        JsonObject obj = new JsonObject();
+        obj.addProperty("status", 400);
+        obj.addProperty("code", "Transaction creation error");
+        obj.addProperty("title", "Datos de transacción no válidos");
+        obj.addProperty("detail", "La transacción debe tener al menos un nombre y una cantidad");
         obj.addProperty("timestamp", LocalDateTime.now().toString());
 
         return new ResponseEntity<>(obj.toString(), HttpStatus.BAD_REQUEST);

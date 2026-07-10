@@ -1,14 +1,18 @@
 package com.apifinance.apirestfinance.service;
 
+import com.apifinance.apirestfinance.control.exceptions.CategoryAssigmentError;
+import com.apifinance.apirestfinance.control.exceptions.TransactionDetailsError;
 import com.apifinance.apirestfinance.model.*;
 import com.apifinance.apirestfinance.repositories.CategorizationRepository;
 import com.apifinance.apirestfinance.repositories.CategoryRepository;
 import com.apifinance.apirestfinance.repositories.TransactionRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,19 +35,31 @@ public class TransactionService {
         this.categoryRepository = categoryRepository;
     }
 
-    /**
-     * Crea una transacción y se comunica con el repository para conectarse a la DB
-     * @param transaction Una transacción
-     * @return La misma transacción
-     */
+
     public Transaction create(Transaction transaction) {
-        valuateCoherenceCategory(transaction);
-        return transactionRepository.save(transaction);
+        if(verifyTransactionDetails(transaction)){
+            throw new TransactionDetailsError("Datos de la transacción no válidos");
+        }
+
+        Transaction newTransaction = setCategory(transaction);
+        return transactionRepository.save(newTransaction);
     }
 
-    /**
-     * Asigna una categoría de forma automática a una descripción o nombre de transacción
-     */
+    private boolean verifyTransactionDetails(Transaction transaction) {
+        return transaction.getName().isEmpty() || transaction.getId().toString().isEmpty();
+    }
+
+    private Transaction setCategory(Transaction transaction) {
+        Category category = categorizeAuto(transaction.getDescription());
+        transaction.setCategory(category);
+        analyzeCategory(transaction);
+        return transaction;
+    }
+
+    private void analyzeCategory(Transaction transaction) throws CategoryAssigmentError {
+        valuateCoherenceCategory(transaction);
+    }
+
     private Category categorizeAuto(String description) {
         String normalizedDescription = description.toLowerCase();
 
@@ -56,10 +72,7 @@ public class TransactionService {
                                 "No existe la categoría 'Sin clasificar' — créala primero en la BD")));
     }
 
-    /**
-     * Valida la coherencia de la categoría
-     */
-    private void valuateCoherenceCategory(Transaction t) {
+    private void valuateCoherenceCategory(Transaction t) throws CategoryAssigmentError {
         if (t.getType() != t.getCategory().getType()) {
             throw new CategoryAssigmentError(
                     "No se puede asignar una categoría de " + t.getCategory().getType() +
@@ -68,17 +81,15 @@ public class TransactionService {
     }
 
 
-    /**
-     * Devuelve una lista de transacciones dada una fecha inicial y final
-     */
-    public List<Transaction> getHistorical(User user, LocalDate since, Optional<LocalDate> until) {
-        return transactionRepository.findByOwnerAndDateBetween(user, since, until.orElse(LocalDate.now()));
+
+    public Page<Transaction> getHistorical(User user, LocalDate since, Optional<LocalDate> until, Pageable pageable) {
+        return transactionRepository.findByOwnerAndDateBetween(user, since, until.orElse(LocalDate.now()), pageable);
     }
 
 
-    // --- Balance total ---
     public BigDecimal calculateBalance(User user) {
-        List<Transaction> transactions = transactionRepository.findByOwner(user);
+        Pageable pageable = PageRequest.of(0, 20);
+        Page<Transaction> transactions = transactionRepository.findByOwner(user, pageable);
 
         return transactions.stream()
                 .map(t -> t.getType() == TransactionType.INCOME
@@ -89,8 +100,17 @@ public class TransactionService {
 
 
     public BigDecimal allPerCategory(User user, long categoryId) {
-        return transactionRepository.findByOwnerAndCategoryId(user, categoryId).stream()
+        Pageable pageable = PageRequest.of(0, 20);
+        return transactionRepository.findByOwnerAndCategoryId(user, categoryId, pageable).stream()
                 .map(Transaction::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public Transaction findById(UUID id) {
+        return transactionRepository.findById(id).orElse(null);
+    }
+
+    public Page<Transaction> findAllTransactions(Pageable p){
+        return transactionRepository.findAll(p);
     }
 }

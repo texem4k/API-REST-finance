@@ -2,6 +2,8 @@ package com.apifinance.apirestfinance.repositories;
 
 import com.apifinance.apirestfinance.model.Transaction;
 import com.apifinance.apirestfinance.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
@@ -10,11 +12,13 @@ import java.util.UUID;
 
 public interface TransactionRepository extends JpaRepository<Transaction, UUID> {
 
-    List<Transaction> findByOwnerAndDateBetween(User user, LocalDate desde, LocalDate hasta);
+    Page<Transaction> findByOwnerAndDateBetween(User user, LocalDate desde, LocalDate hasta, Pageable pageable);
 
-    List<Transaction> findByOwnerAndCategoryId(User user, long categoryId);
+    Page<Transaction> findByOwnerAndCategoryId(User user, long categoryId, Pageable pageable);
 
-    List<Transaction> findByOwner(User user);
+    Page<Transaction> findByOwner(User user, Pageable pageable);
+
+    Transaction findById(User user, Pageable pageable);
 
     Transaction save(Transaction t);
 }

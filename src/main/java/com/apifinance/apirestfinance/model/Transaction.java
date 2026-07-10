@@ -6,7 +6,6 @@ import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Optional;
 import java.util.UUID;
 
 
@@ -24,7 +23,7 @@ public class Transaction {
     private UUID id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "usuario", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User owner;
 
     @ManyToOne(optional = false)
@@ -34,7 +33,6 @@ public class Transaction {
     @NotNull(message = "La transacción debe indicar su tipo")
     @Enumerated(EnumType.STRING)
     private TransactionType type;
-
 
     @Size(max = 100)
     private String description;
@@ -53,16 +51,18 @@ public class Transaction {
 
 
 
-    private Transaction(String name, BigDecimal amount, User owner, Category cat, String description){
+    private Transaction(String name, BigDecimal amount, User owner, String description){
         this.name = name;
         this.amount = amount;
         this.owner = owner;
-        this.category = cat;
         this.description = description;
     }
 
     public Transaction() {
+    }
 
+    public static Transaction createTransaction(String name, BigDecimal amount, User owner, String description) {
+        return new Transaction(name, amount, owner, description);
     }
 
     public BigDecimal getAmount(){
@@ -85,6 +85,10 @@ public class Transaction {
         return description;
     }
 
+    public  String getName(){
+        return name;
+    }
+
     public void setAmount(BigDecimal amount){
         this.amount = amount;
     }
@@ -105,4 +109,19 @@ public class Transaction {
         this.description = x;
     }
 
+    public void setName(String x){
+        this.name = x;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Transaction that = (Transaction) o;
+        return id.equals(that.id);
+    }
 }

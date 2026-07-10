@@ -1,7 +1,7 @@
 package com.apifinance.apirestfinance.service;
 
+import com.apifinance.apirestfinance.control.exceptions.CategoryNotValid;
 import com.apifinance.apirestfinance.model.Category;
-import com.apifinance.apirestfinance.model.TransactionType;
 import com.apifinance.apirestfinance.repositories.CategoryRepository;
 import org.springframework.stereotype.Service;
 

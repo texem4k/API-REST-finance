@@ -3,6 +3,9 @@ package com.apifinance.apirestfinance.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,11 +37,21 @@ public class User {
     @Column(name="ID", unique = true, nullable = false)
     private UUID id;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Transaction> transactions;
 
 
     public User() {}
+
+    private User(String username, String email, String passwordHash) {
+        this.username = username;
+        this.email = email;
+        this.passwordHash = passwordHash;
+    }
+
+    public static User createUser(String username, String email, String passwordHash) {
+        return new User(username, email, passwordHash);
+    }
 
     public String getName() {
         return username;
@@ -62,5 +75,14 @@ public class User {
 
     public void setPasswordHash(String x) {
         this.passwordHash = x;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

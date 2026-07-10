@@ -1,4 +1,4 @@
-package com.apifinance.apirestfinance.service;
+package com.apifinance.apirestfinance.control.exceptions;
 
 public class CategoryAssigmentError extends RuntimeException {
     public CategoryAssigmentError(String message) {

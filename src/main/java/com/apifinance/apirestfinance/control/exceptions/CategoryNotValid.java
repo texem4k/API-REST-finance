@@ -1,4 +1,4 @@
-package com.apifinance.apirestfinance.service;
+package com.apifinance.apirestfinance.control.exceptions;
 
 public class CategoryNotValid extends RuntimeException {
     public CategoryNotValid(String message) {

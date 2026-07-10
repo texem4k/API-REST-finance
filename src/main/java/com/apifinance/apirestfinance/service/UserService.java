@@ -1,7 +1,10 @@
 package com.apifinance.apirestfinance.service;
 
+import com.apifinance.apirestfinance.control.exceptions.UserDetailsError;
 import com.apifinance.apirestfinance.model.*;
 import com.apifinance.apirestfinance.repositories.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +20,7 @@ public class UserService {
 
 
     public User createUser(User user) {
+        user.setPasswordHash(user.passwordEncoder().encode(user.getPasswordHash()));
         if(validateUserDetails(user.getName(), user.getEmail(), user.getPasswordHash())) {
             return userRepository.save(user);
         }
@@ -25,8 +29,8 @@ public class UserService {
     }
 
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public Page<User> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     public User getUserById(UUID id) {
