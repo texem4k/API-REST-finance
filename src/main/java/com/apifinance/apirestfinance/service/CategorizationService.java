@@ -23,4 +23,12 @@ public class CategorizationService {
     public List<Categorization> getAllCategorizations() {
         return categorizationRepository.findAll();
     }
+
+    public Categorization getCategorizationById(Long id) {
+        return categorizationRepository.findById(id).orElse(null);
+    }
+
+    public Categorization getCategorizationByKeyWord(String keyWord) {
+        return categorizationRepository.findByKeyWord(keyWord);
+    }
 }

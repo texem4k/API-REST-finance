@@ -1,6 +1,5 @@
 package com.apifinance.apirestfinance.service;
 
-import com.apifinance.apirestfinance.control.exceptions.CategoryAssigmentError;
 import com.apifinance.apirestfinance.control.exceptions.TransactionDetailsError;
 import com.apifinance.apirestfinance.model.*;
 import com.apifinance.apirestfinance.repositories.CategorizationRepository;
@@ -40,7 +39,7 @@ public class TransactionService {
         if(verifyTransactionDetails(transaction)){
             throw new TransactionDetailsError("Datos de la transacción no válidos");
         }
-
+        transaction.getOwner().addTransaction(transaction);
         Transaction newTransaction = setCategory(transaction);
         return transactionRepository.save(newTransaction);
     }
@@ -52,15 +51,10 @@ public class TransactionService {
     private Transaction setCategory(Transaction transaction) {
         Category category = categorizeAuto(transaction.getDescription());
         transaction.setCategory(category);
-        analyzeCategory(transaction);
         return transaction;
     }
 
-    private void analyzeCategory(Transaction transaction) throws CategoryAssigmentError {
-        valuateCoherenceCategory(transaction);
-    }
-
-    private Category categorizeAuto(String description) {
+    public Category categorizeAuto(String description) {
         String normalizedDescription = description.toLowerCase();
 
         return (Category) reglaRepository.findAll().stream()
@@ -72,18 +66,17 @@ public class TransactionService {
                                 "No existe la categoría 'Sin clasificar' — créala primero en la BD")));
     }
 
-    private void valuateCoherenceCategory(Transaction t) throws CategoryAssigmentError {
-        if (t.getType() != t.getCategory().getType()) {
-            throw new CategoryAssigmentError(
-                    "No se puede asignar una categoría de " + t.getCategory().getType() +
-                            " a una transacción de tipo " + t.getType());
-        }
-    }
-
 
 
     public Page<Transaction> getHistorical(User user, LocalDate since, Optional<LocalDate> until, Pageable pageable) {
-        return transactionRepository.findByOwnerAndDateBetween(user, since, until.orElse(LocalDate.now()), pageable);
+        if(until.isEmpty() || until.get().isAfter(LocalDate.now())) {
+            return transactionRepository.findByOwnerAndDateBetween(user, since, LocalDate.now(), pageable);
+
+        }
+        else if(since.isAfter(until.get()) || since==null) {
+            throw  new TransactionDetailsError("Datos introducidos no validos");
+        }
+        return transactionRepository.findByOwnerAndDateBetween(user, since, until.get(), pageable);
     }
 
 
@@ -112,5 +105,9 @@ public class TransactionService {
 
     public Page<Transaction> findAllTransactions(Pageable p){
         return transactionRepository.findAll(p);
+    }
+
+    public Page<Transaction> findByOwner(User user, Pageable pageable) {
+        return transactionRepository.findByOwner(user, pageable);
     }
 }

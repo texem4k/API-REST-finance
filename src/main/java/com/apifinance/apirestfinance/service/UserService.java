@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -29,12 +29,16 @@ public class UserService {
     }
 
 
-    public Page<User> getAllUsers(Pageable pageable) {
+    public Page<User> findAllUsers(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
 
-    public User getUserById(UUID id) {
-        return userRepository.findUserById(id);
+    public Optional<User> findUserById(UUID id) {
+        return userRepository.findById(id);
+    }
+
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     private boolean validateUserDetails(String name, String email, String password) {

@@ -8,7 +8,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -65,6 +64,10 @@ public class User {
         return passwordHash;
     }
 
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
     public void setName(String x) {
         this.username = x;
     }
@@ -79,6 +82,10 @@ public class User {
 
     public UUID getId() {
         return id;
+    }
+
+    public void addTransaction(Transaction transaction) {
+        transactions.add(transaction);
     }
 
     @Bean

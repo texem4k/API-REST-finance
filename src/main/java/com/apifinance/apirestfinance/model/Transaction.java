@@ -49,20 +49,19 @@ public class Transaction {
     @Size(min = 3, max = 30, message = "El nombre de la transacción debe tener entre 3 y 30 caracteres")
     private String name;
 
-
-
-    private Transaction(String name, BigDecimal amount, User owner, String description){
+    private Transaction(String name, BigDecimal amount, User owner, String description, TransactionType type) {
         this.name = name;
         this.amount = amount;
         this.owner = owner;
         this.description = description;
+        this.type = type;
     }
 
     public Transaction() {
     }
 
-    public static Transaction createTransaction(String name, BigDecimal amount, User owner, String description) {
-        return new Transaction(name, amount, owner, description);
+    public static Transaction createTransaction(String name, BigDecimal amount, User owner, String description, TransactionType type) {
+        return new Transaction(name, amount, owner, description,type);
     }
 
     public BigDecimal getAmount(){
@@ -89,6 +88,10 @@ public class Transaction {
         return name;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
     public void setAmount(BigDecimal amount){
         this.amount = amount;
     }
@@ -113,9 +116,8 @@ public class Transaction {
         this.name = x;
     }
 
-    public UUID getId() {
-        return id;
-    }
+
+
 
     @Override
     public boolean equals(Object o) {

@@ -22,13 +22,13 @@ public class UserTest {
 
     @Test
     public void findAllWithoutUsersCreatedTest(){
-        assertEquals(0, userService.getAllUsers(pageable).getTotalElements());
+        assertEquals(0, userService.findAllUsers(pageable).getTotalElements());
     }
 
     @Test
     public void findUserByIdTest(){
-        User firstUser = userService.getAllUsers(pageable).stream().findFirst().orElseThrow();
-        assertEquals(firstUser, userService.getUserById(firstUser.getId()));
+        User firstUser = userService.findAllUsers(pageable).stream().findFirst().orElseThrow();
+        assertEquals(firstUser, userService.findUserById(firstUser.getId()).orElse(null));
     }
 
 
