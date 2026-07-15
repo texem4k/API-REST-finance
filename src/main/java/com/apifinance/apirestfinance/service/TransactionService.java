@@ -85,7 +85,7 @@ public class TransactionService {
         Page<Transaction> transactions = transactionRepository.findByOwner(user, pageable);
 
         return transactions.stream()
-                .map(t -> t.getType() == TransactionType.INCOME
+                .map(t -> t.getCategory().getType() == TransactionType.INCOME
                         ? t.getAmount()
                         : t.getAmount().negate())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);

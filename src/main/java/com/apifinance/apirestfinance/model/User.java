@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,14 +30,14 @@ public class User {
     private String passwordHash;
 
     @Column(nullable = true)
-    private LocalDateTime registerDate = LocalDateTime.now();
+    private final LocalDateTime registerDate = LocalDateTime.now();
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name="ID", unique = true, nullable = false)
     private UUID id;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Transaction> transactions;
 
 
@@ -46,6 +47,7 @@ public class User {
         this.username = username;
         this.email = email;
         this.passwordHash = passwordHash;
+        this.transactions = new ArrayList<>();
     }
 
     public static User createUser(String username, String email, String passwordHash) {
@@ -86,10 +88,5 @@ public class User {
 
     public void addTransaction(Transaction transaction) {
         transactions.add(transaction);
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }

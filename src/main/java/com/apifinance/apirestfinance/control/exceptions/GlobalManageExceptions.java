@@ -69,7 +69,7 @@ public class GlobalManageExceptions extends RuntimeException {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(UserPasswordError.class)
+    @ExceptionHandler(TransactionDetailsError.class)
     public ResponseEntity<String> manageTransactionDetailsError(TransactionDetailsError ex) {
         JsonObject obj = new JsonObject();
         obj.addProperty("status", 400);

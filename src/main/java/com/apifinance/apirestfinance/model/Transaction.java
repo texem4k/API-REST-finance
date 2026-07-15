@@ -30,10 +30,6 @@ public class Transaction {
     @JoinColumn(name = "categoria_id", nullable = false)
     private Category category;
 
-    @NotNull(message = "La transacción debe indicar su tipo")
-    @Enumerated(EnumType.STRING)
-    private TransactionType type;
-
     @Size(max = 100)
     private String description;
 
@@ -49,19 +45,18 @@ public class Transaction {
     @Size(min = 3, max = 30, message = "El nombre de la transacción debe tener entre 3 y 30 caracteres")
     private String name;
 
-    private Transaction(String name, BigDecimal amount, User owner, String description, TransactionType type) {
+    private Transaction(String name, BigDecimal amount, User owner, String description) {
         this.name = name;
         this.amount = amount;
         this.owner = owner;
         this.description = description;
-        this.type = type;
     }
 
     public Transaction() {
     }
 
-    public static Transaction createTransaction(String name, BigDecimal amount, User owner, String description, TransactionType type) {
-        return new Transaction(name, amount, owner, description,type);
+    public static Transaction createTransaction(String name, BigDecimal amount, User owner, String description) {
+        return new Transaction(name, amount, owner, description);
     }
 
     public BigDecimal getAmount(){
@@ -74,10 +69,6 @@ public class Transaction {
 
     public User getOwner(){
         return owner;
-    }
-
-    public TransactionType getType(){
-        return type;
     }
 
     public String getDescription(){
@@ -103,11 +94,6 @@ public class Transaction {
     public void setOwner(User user){
         this.owner = user;
     }
-
-    public void setTransactionType(TransactionType type){
-        this.type = type;
-    }
-
     public void setDescription(String x){
         this.description = x;
     }

@@ -46,7 +46,7 @@ public class TransactionController {
     }
 
     @GetMapping("/total-categoria")
-    public BigDecimal getBalance(@RequestBody @Valid User user,@RequestParam long categoryId) {
+    public BigDecimal getTotalPerCategory(@RequestBody @Valid User user,@RequestParam long categoryId) {
         return transactionService.allPerCategory(user, categoryId);
     }
 

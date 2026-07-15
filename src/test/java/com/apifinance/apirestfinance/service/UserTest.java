@@ -28,7 +28,7 @@ public class UserTest {
     @Test
     public void findUserByIdTest(){
         User firstUser = userService.findAllUsers(pageable).stream().findFirst().orElseThrow();
-        assertEquals(firstUser, userService.findUserById(firstUser.getId()).orElse(null));
+        assertEquals(firstUser, userService.findUserById(firstUser.getId()));
     }
 
 

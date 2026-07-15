@@ -1,5 +1,6 @@
 package com.apifinance.apirestfinance.service;
 
+import com.apifinance.apirestfinance.control.SecurityConfig;
 import com.apifinance.apirestfinance.control.exceptions.UserDetailsError;
 import com.apifinance.apirestfinance.model.*;
 import com.apifinance.apirestfinance.repositories.UserRepository;
@@ -20,7 +21,7 @@ public class UserService {
 
 
     public User createUser(User user) {
-        user.setPasswordHash(user.passwordEncoder().encode(user.getPasswordHash()));
+        user.setPasswordHash(SecurityConfig.passwordEncoder().encode(user.getPasswordHash()));
         if(validateUserDetails(user.getName(), user.getEmail(), user.getPasswordHash())) {
             return userRepository.save(user);
         }
@@ -33,12 +34,12 @@ public class UserService {
         return userRepository.findAll(pageable);
     }
 
-    public Optional<User> findUserById(UUID id) {
-        return userRepository.findById(id);
+    public User findUserById(UUID id) {
+        return userRepository.findById(id).orElse(null);
     }
 
     public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return userRepository.findByEmail(email).orElse(null);
     }
 
     private boolean validateUserDetails(String name, String email, String password) {

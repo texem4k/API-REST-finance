@@ -1,15 +1,14 @@
 package com.apifinance.apirestfinance.control;
 
+import com.apifinance.apirestfinance.control.requests.UserRequest;
 import com.apifinance.apirestfinance.model.User;
 import com.apifinance.apirestfinance.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 
@@ -25,18 +24,19 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody @Valid User newUser) {
-        return userService.createUser(newUser);
+    public User createUser(@RequestBody @Valid UserRequest newUser) {
+
+        return userService.createUser(User.createUser(newUser.getName(),newUser.getEmail(),newUser.getPassword()));
     }
 
     @GetMapping("/userlist")
     public Page<User> getAllUsers() {
-        return userService.getAllUsers(pageable);
+        return userService.findAllUsers(pageable);
     }
 
     @GetMapping("/user-id")
     public User getUserById(UUID id) {
-        return userService.getUserById(id);
+        return userService.findUserById(id);
     }
 
 }

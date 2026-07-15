@@ -13,7 +13,7 @@ import jakarta.validation.constraints.NotNull;
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message = "El nombre de la categoría no puede estar vacío")

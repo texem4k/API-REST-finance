@@ -14,7 +14,7 @@ import jakarta.validation.constraints.NotBlank;
 public class Categorization {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
