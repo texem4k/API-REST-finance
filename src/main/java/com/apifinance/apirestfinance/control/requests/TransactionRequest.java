@@ -9,9 +9,7 @@ public class TransactionRequest {
 
     private String name;
     private String description;
-    private User owner;
-
-    private Category category;
+    private String ownerEmail;
 
     private BigDecimal amount;
 
@@ -23,12 +21,8 @@ public class TransactionRequest {
         return description;
     }
 
-    public User getOwner() {
-        return owner;
-    }
-
-    public Category getCategory() {
-        return category;
+    public String getOwnerEmail() {
+        return ownerEmail;
     }
 
     public BigDecimal getAmount() {

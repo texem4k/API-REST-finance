@@ -39,4 +39,9 @@ public class UserController {
         return userService.findUserById(id);
     }
 
+    @GetMapping("/user-email")
+    public User getUserByEmail(String email) {
+        return userService.findUserByEmail(email);
+    }
+
 }

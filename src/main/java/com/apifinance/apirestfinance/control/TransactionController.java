@@ -1,8 +1,10 @@
 package com.apifinance.apirestfinance.control;
 
+import com.apifinance.apirestfinance.control.requests.TransactionRequest;
 import com.apifinance.apirestfinance.model.Transaction;
 import com.apifinance.apirestfinance.model.User;
 import com.apifinance.apirestfinance.service.TransactionService;
+import com.apifinance.apirestfinance.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,15 +26,18 @@ import java.util.UUID;
 public class TransactionController {
 
     private final TransactionService transactionService;
+    private final UserService userService;
     private Pageable firstPageWithTenElements = PageRequest.of(0, 10);
 
-    public TransactionController(TransactionService transactionService) {
+    public TransactionController(TransactionService transactionService, UserService userService) {
         this.transactionService = transactionService;
+        this.userService = userService;
     }
 
     @PostMapping
-    public Transaction addTransaction(@RequestBody @Valid Transaction t) {
-        return transactionService.create(t);
+    public Transaction addTransaction(@RequestBody @Valid TransactionRequest t) {
+        User user = userService.findUserByEmail(t.getOwnerEmail());
+        return transactionService.create(Transaction.createTransaction(t.getName(),t.getAmount(),user,t.getDescription()));
     }
 
     @GetMapping("/historial")
