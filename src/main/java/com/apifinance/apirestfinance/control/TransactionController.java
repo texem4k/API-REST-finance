@@ -2,6 +2,7 @@ package com.apifinance.apirestfinance.control;
 
 import com.apifinance.apirestfinance.control.requests.TransactionRequest;
 import com.apifinance.apirestfinance.model.Transaction;
+import com.apifinance.apirestfinance.model.TransactionType;
 import com.apifinance.apirestfinance.model.User;
 import com.apifinance.apirestfinance.service.TransactionService;
 import com.apifinance.apirestfinance.service.UserService;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Console;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -37,7 +39,9 @@ public class TransactionController {
     @PostMapping
     public Transaction addTransaction(@RequestBody @Valid TransactionRequest t) {
         User user = userService.findUserByEmail(t.getOwnerEmail());
-        return transactionService.create(Transaction.createTransaction(t.getName(),t.getAmount(),user,t.getDescription()));
+        TransactionType type = TransactionType.valueOf(t.getType().toUpperCase());
+        System.out.println(type);
+        return transactionService.create(Transaction.createTransaction(t.getName(),t.getAmount(),user,t.getDescription(), type));
     }
 
     @GetMapping("/historial")

@@ -39,7 +39,7 @@ public class TransactionTest {
 
     @Test
     public void createTransactionWithCorrectInformationTest(){
-        Transaction transaction = Transaction.createTransaction("Transacción ejemplo", BigDecimal.valueOf(50), userService.findAllUsers(pageable).stream().findFirst().get(),"");
+        Transaction transaction = Transaction.createTransaction("Transacción ejemplo", BigDecimal.valueOf(50), userService.findAllUsers(pageable).stream().findFirst().get(),"", TransactionType.INCOME);
         Transaction result = transactionService.create(transaction);
         assertEquals(result, transaction);
     }
@@ -47,15 +47,15 @@ public class TransactionTest {
 
     @Test
     public void createTransactionWithIncorrectInformationTest(){
-        Transaction transaction = Transaction.createTransaction("", BigDecimal.valueOf(50), userService.findAllUsers(pageable).stream().findFirst().get(),"");
+        Transaction transaction = Transaction.createTransaction("", BigDecimal.valueOf(50), userService.findAllUsers(pageable).stream().findFirst().get(),"", TransactionType.INCOME);
         assertThrows(TransactionDetailsError.class, () -> transactionService.create(transaction));
     }
 
 
     @Test
     public void setCorrectCategoryToTransactionTest(){
-        Transaction transaction1 = Transaction.createTransaction("Transacción ejemplo", BigDecimal.valueOf(50), userService.findAllUsers(pageable).stream().findFirst().get(),"pizza margarita");
-        Transaction transaction2 = Transaction.createTransaction("Transacción ejemplo", BigDecimal.valueOf(50), userService.findAllUsers(pageable).stream().findFirst().get(),"hola");
+        Transaction transaction1 = Transaction.createTransaction("Transacción ejemplo", BigDecimal.valueOf(50), userService.findAllUsers(pageable).stream().findFirst().get(),"pizza margarita", TransactionType.EXPENSE);
+        Transaction transaction2 = Transaction.createTransaction("Transacción ejemplo", BigDecimal.valueOf(50), userService.findAllUsers(pageable).stream().findFirst().get(),"hola", TransactionType.INCOME);
         Category cat1 = transactionService.categorizeAuto(transaction1.getDescription());
         Category cat2 = transactionService.categorizeAuto(transaction2.getDescription());
         assertEquals(cat1, categorizationService.getCategorizationByKeyWord("pizza").getCategory());
@@ -69,9 +69,9 @@ public class TransactionTest {
         User newUser = User.createUser("Calcular balance user", "balance@gmail.com", "Balance123.");
         userService.createUser(newUser);
 
-        Transaction transaction1 = Transaction.createTransaction("Transacción ejemplo1", BigDecimal.valueOf(50), userService.findUserByEmail(newUser.getEmail()),"ingreso1");
-        Transaction transaction2 = Transaction.createTransaction("Transacción ejemplo2", BigDecimal.valueOf(10), userService.findUserByEmail(newUser.getEmail()),"ingreso2");
-        Transaction transaction3 = Transaction.createTransaction("Transacción ejemplo3", BigDecimal.valueOf(5), userService.findUserByEmail(newUser.getEmail()),"gasto1");
+        Transaction transaction1 = Transaction.createTransaction("Transacción ejemplo1", BigDecimal.valueOf(50), userService.findUserByEmail(newUser.getEmail()),"ingreso1", TransactionType.INCOME);
+        Transaction transaction2 = Transaction.createTransaction("Transacción ejemplo2", BigDecimal.valueOf(10), userService.findUserByEmail(newUser.getEmail()),"ingreso2", TransactionType.INCOME);
+        Transaction transaction3 = Transaction.createTransaction("Transacción ejemplo3", BigDecimal.valueOf(5), userService.findUserByEmail(newUser.getEmail()),"gasto1", TransactionType.EXPENSE);
 
         transactionService.create(transaction1);
         transactionService.create(transaction2);

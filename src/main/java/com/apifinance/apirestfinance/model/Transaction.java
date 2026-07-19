@@ -22,6 +22,10 @@ public class Transaction {
     @Column(name="ID", unique = true, nullable = false)
     private UUID id;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private TransactionType type;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User owner;
@@ -45,18 +49,19 @@ public class Transaction {
     @Size(min = 3, max = 30, message = "El nombre de la transacción debe tener entre 3 y 30 caracteres")
     private String name;
 
-    private Transaction(String name, BigDecimal amount, User owner, String description) {
+    private Transaction(String name, BigDecimal amount, User owner, String description, TransactionType type) {
         this.name = name;
         this.amount = amount;
         this.owner = owner;
         this.description = description;
+        this.type = type;
     }
 
     public Transaction() {
     }
 
-    public static Transaction createTransaction(String name, BigDecimal amount, User owner, String description) {
-        return new Transaction(name, amount, owner, description);
+    public static Transaction createTransaction(String name, BigDecimal amount, User owner, String description, TransactionType type) {
+        return new Transaction(name, amount, owner, description, type);
     }
 
     public BigDecimal getAmount(){
@@ -83,6 +88,10 @@ public class Transaction {
         return id;
     }
 
+    public TransactionType getType() {
+        return type;
+    }
+
     public void setAmount(BigDecimal amount){
         this.amount = amount;
     }
@@ -101,7 +110,6 @@ public class Transaction {
     public void setName(String x){
         this.name = x;
     }
-
 
 
 

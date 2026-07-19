@@ -17,7 +17,7 @@ public class Category {
     private Long id;
 
     @NotBlank(message = "El nombre de la categoría no puede estar vacío")
-    @Column(unique = true, nullable = false)
+    @Column(unique = false, nullable = false)
     private String name;
 
     @NotNull(message = "La categoría debe tener un tipo (INGRESO o GASTO)")

@@ -81,9 +81,19 @@ public class GlobalManageExceptions extends RuntimeException {
         return new ResponseEntity<>(obj.toString(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<String> manageIllegalStateException(IllegalStateException ex) {
+        return new ResponseEntity<>("Transacción sin categoria. Error: "+ex.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(NotEnoughBalanceError.class)
+    public ResponseEntity<String> manageNotEnoughBalanceError(NotEnoughBalanceError ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> manageGeneralErrors(Exception ex) {
-        return new ResponseEntity<>("Ocurrió un error inesperado", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Ocurrió un error inesperado. Error "+ex.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

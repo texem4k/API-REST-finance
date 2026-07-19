@@ -1,8 +1,5 @@
 package com.apifinance.apirestfinance.control.requests;
 
-import com.apifinance.apirestfinance.model.Category;
-import com.apifinance.apirestfinance.model.User;
-
 import java.math.BigDecimal;
 
 public class TransactionRequest {
@@ -12,6 +9,8 @@ public class TransactionRequest {
     private String ownerEmail;
 
     private BigDecimal amount;
+
+    private String type;
 
     public String getName() {
         return name;
@@ -27,5 +26,9 @@ public class TransactionRequest {
 
     public BigDecimal getAmount() {
         return amount;
+    }
+
+    public String getType() {
+        return type;
     }
 }
