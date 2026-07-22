@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -115,6 +116,10 @@ public class TransactionService {
         Pageable pageable = PageRequest.of(0, 20);
         Page<Transaction> transactions = transactionRepository.findByOwner(user, pageable);
 
+        return calculateBalanceByTransactions(transactions.stream().toList());
+    }
+
+    public BigDecimal calculateBalanceByTransactions(List<Transaction> transactions){
         return transactions.stream()
                 .map(t -> t.getCategory().getType() == TransactionType.INCOME
                         ? t.getAmount()
@@ -127,6 +132,14 @@ public class TransactionService {
         Pageable pageable = PageRequest.of(0, 20);
         return transactionRepository.findByOwnerAndCategoryId(user, categoryId, pageable).stream()
                 .map(Transaction::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal allPerCategory(List<Transaction> transactions, Category cat) {
+        return transactions.stream().filter(t -> t.getCategory()==cat)
+                .map(t -> t.getCategory().getType() == TransactionType.INCOME
+                        ? t.getAmount()
+                        : t.getAmount().negate())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
