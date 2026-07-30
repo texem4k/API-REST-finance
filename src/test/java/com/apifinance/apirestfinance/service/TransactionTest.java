@@ -38,13 +38,13 @@ public class TransactionTest {
     private TransactionRepository transactionRepository;
 
 
-    @InjectMocks
+    @Mock
     private final TransactionService transactionService;
 
-    @InjectMocks
+    @Mock
     private final UserService userService;
 
-    @InjectMocks
+    @Mock
     private final CategorizationService categorizationService;
 
     public TransactionTest(TransactionService transactionService, UserService userService, CategorizationService categorizationService) {

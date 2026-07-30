@@ -42,7 +42,7 @@ public class UserService {
         return userRepository.findByEmail(email).orElse(null);
     }
 
-    private boolean validateUserDetails(String name, String email, String password) {
+    public boolean validateUserDetails(String name, String email, String password) {
         return Validations.validateName(name) && Validations.validateEmail(email) && Validations.validatePassword(password);
     }
 

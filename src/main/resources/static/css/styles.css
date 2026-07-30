@@ -1,0 +1,31 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+main{
+    padding-left: 1rem;
+}
+.headerClass{
+    background-color: darkgrey;
+    height: 2.5rem;
+
+}
+
+.title{
+    text-align: center;
+}
+
+.sections{
+    align-self: center;
+    align-content: center;
+    align-items: center;
+    display: flex;
+    padding-top: 4rem;
+
+}
+.sections section {
+    flex: 1; /* Hace que ocupen el mismo ancho */
+    padding: 5rem;
+    text-align: center;
+}

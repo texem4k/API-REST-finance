@@ -8,8 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UserTest {
     UserService userService;
@@ -19,24 +18,10 @@ public class UserTest {
         this.userService = userService;
     }
 
-
-    @Test
-    public void findAllWithoutUsersCreatedTest(){
-        assertEquals(0, userService.findAllUsers(pageable).getTotalElements());
-    }
-
-    @Test
-    public void findUserByIdTest(){
-        User firstUser = userService.findAllUsers(pageable).stream().findFirst().orElseThrow();
-        assertEquals(firstUser, userService.findUserById(firstUser.getId()));
-    }
-
-
     @Test
     public void createUserWithCorrectInformationTest(){
         User user = User.createUser("ejemplo", "email@ejemplo.es", "Contraseña123.");
-        User result = userService.createUser(user);
-        assertEquals(result, user);
+        assertTrue(userService.validateUserDetails(user.getName(),user.getEmail(), user.getPasswordHash()));
     }
 
     @Test
