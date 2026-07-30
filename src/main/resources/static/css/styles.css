@@ -5,6 +5,7 @@ body {
 
 main{
     padding-left: 1rem;
+    padding-right: 1rem;
 }
 .headerClass{
     background-color: darkgrey;
@@ -14,6 +15,19 @@ main{
 
 .title{
     text-align: center;
+}
+
+
+.buttons{
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.buttons button{
+    align-self: center;
+    align-content: center;
+    align-items: center;
 }
 
 .sections{
@@ -26,6 +40,5 @@ main{
 }
 .sections section {
     flex: 1; /* Hace que ocupen el mismo ancho */
-    padding: 5rem;
     text-align: center;
 }
