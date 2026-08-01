@@ -4,11 +4,21 @@
         </header>
 
         <main>
-            <h2 class="title">Bienvenido</h2>
-            <div class="buttons">
-                <button>Registrarse</button>
+
+
+            @if(currentUser){
+              <h2 class="title">Bienvenido, {{currentUser.name}}</h2>
+            }
+            @else{
+              <h2 class="title">Bienvenido, registrate o inicia sesión para realizar operaciones</h2>
+
+            }
+
+
+          <div class="buttons">
+                <button (click)="goToLogin()">Registrarse</button>
                 <button>Iniciar sesión</button>
-            </div>
+          </div>
 
 
             <div class="sections">

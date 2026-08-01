@@ -25,6 +25,10 @@ public class UserService {
         if(validateUserDetails(user.getName(), user.getEmail(), user.getPasswordHash())) {
             return userRepository.save(user);
         }
+
+        if(userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new UserDetailsError("Email ya en uso");
+        }
         throw new UserDetailsError("Datos introducidos no validos");
 
     }
