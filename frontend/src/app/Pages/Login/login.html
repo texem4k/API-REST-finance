@@ -1,39 +1,29 @@
 <body>
 
-  <div class="title">
-    <h2>Registro</h2>
-  </div>
+<div class="title">
+  <h2>Inicio de sesión</h2>
+</div>
 
-  <div class="loginForm">
-    <form [formGroup]="loginForm" (ngSubmit)="login()" class="login-form">
+<div class="loginForm">
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <p>Correo electrónico</p>
+    <input
+      type="email"
+      name="email"
+      [formControl]="loginForm.controls['email']"
+      placeholder="example@example.com"
+    >
 
-      <p>Nombre de usuario</p>
-      <input
-        type="text"
-        name="username"
-        [formControl]="loginForm.controls['username']"
-      >
-      @if(loginForm.controls.username.invalid && loginForm.controls.username.touched){
-        <p class="messageError"></p>
-      }
-
-      <p>Correo electrónico</p>
-      <input
-        type="email"
-        name="email"
-        [formControl]="loginForm.controls['email']"
-      >
-
-      <p>Contraseña</p>
-      <input
-        type="password"
-        name="password"
-        [formControl]="loginForm.controls['password']"
-      >
-      <br><br>
-      <button class="actionButton" type="submit"> Registarse
-      </button>
-    </form>
-  </div>
+    <p>Contraseña</p>
+    <input
+      type="password"
+      name="password"
+      [formControl]="loginForm.controls['password']"
+    >
+    <br><br>
+    <button class="actionButton" type="submit"> Iniciar sesión
+    </button>
+  </form>
+</div>
 
 </body>

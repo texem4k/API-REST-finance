@@ -50,4 +50,14 @@ public class UserService {
         return Validations.validateName(name) && Validations.validateEmail(email) && Validations.validatePassword(password);
     }
 
+    public User login(String email, String passwordPlano) {
+        User usuario = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario o contraseña incorrectos"));
+
+        if (!SecurityConfig.passwordEncoder().matches(passwordPlano, usuario.getPasswordHash())) {
+            throw new IllegalArgumentException("Usuario o contraseña incorrectos");
+        }
+
+        return usuario;
+    }
 }

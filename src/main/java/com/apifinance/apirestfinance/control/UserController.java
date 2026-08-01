@@ -40,8 +40,13 @@ public class UserController {
     }
 
     @GetMapping("/user-email")
-    public User getUserByEmail(String email) {
+    public User getUserByEmail(@RequestParam String email) {
         return userService.findUserByEmail(email);
+    }
+
+    @GetMapping("/login")
+    public User login(@RequestParam String email, @RequestParam String password) {
+        return userService.login(email, password);
     }
 
 }

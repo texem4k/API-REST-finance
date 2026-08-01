@@ -11,7 +11,8 @@ export class SessionService {
 
   getUser(): User | undefined {
     const data = localStorage.getItem(this.KEY);
-    return data ? JSON.parse(data) : undefined;
+    return data ? JSON.parse(data) : undefined
+      ;
   }
 
   logOut(): void {

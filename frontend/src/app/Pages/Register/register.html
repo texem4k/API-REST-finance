@@ -1,32 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Register</title>
-    </head>
+<body>
 
-    <body>
-        <form class="form">
-            <h2>Registro</h2>
+  <div class="title">
+    <h2>Registro</h2>
+  </div>
 
-            <section>
+  <div class="registerForm">
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
 
-                <div class="inputField">
-                    <label for="username">Nombre de usuario</label>
-                    <input type="text" id="username" name="username">
-                </div>
+      <p>Nombre de usuario</p>
+      <input
+        type="text"
+        name="username"
+        [formControl]="registerForm.controls['username']"
+        placeholder="John Doe"
+      >
 
-                <div class="inputField">
-                    <label for="email">Email</label>
-                    <input type="text" id="" name="username">
-                </div>
+      @if(registerForm.controls.username.invalid && registerForm.controls.username.touched){
+        <p class="messageError"></p>
+      }
 
-                <div class="inputField">
-                    <label for="username">Nombre de usuario</label>
-                    <input type="text" id="username" name="username">
-                </div>
+      <p>Correo electrónico</p>
+      <input
+        type="email"
+        name="email"
+        [formControl]="registerForm.controls['email']"
+        placeholder="example@example.com"
+      >
 
-            </section>
-        </form>
-    </body>
-</html>
+      <p>Contraseña</p>
+      <input
+        type="password"
+        name="password"
+        [formControl]="registerForm.controls['password']"
+      >
+      <br><br>
+      <button class="actionButton" type="submit"> Registarse
+      </button>
+    </form>
+  </div>
+
+</body>

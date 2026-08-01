@@ -1,36 +1,32 @@
-import {Component, inject} from '@angular/core';
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {UserService} from '../../service/userService';
-import {User} from '../../Model/User';
-import {Router} from '@angular/router';
+import {Component, inject, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {SessionService} from '../../service/sessionService';
-
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {User} from '../../Model/User';
+import {UserService} from '../../service/userService';
+import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-logon',
   standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './login.html',
-  imports: [
-    FormsModule,
-    ReactiveFormsModule
-  ],
-  styleUrl: './login.css'
+  styleUrl: './login.css',
 })
 
-export class Login{
+export class Login implements OnInit {
 
 
-  private userService= inject(UserService);
-  private sessionService= inject(SessionService);
-  private user: User | undefined;
+  private sessionService = inject(SessionService);
+  private userService = inject(UserService);
   private router = inject(Router);
+  user: User | undefined;
+
+    ngOnInit(): void {
+        throw new Error("Method not implemented.");
+    }
 
   loginForm = new FormGroup({
-
-    username: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required, Validators.minLength(4), Validators.maxLength(32), Validators.pattern(/^[a-zA-Z]{2,}$/)]
-    }),
     email: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required, Validators.email, Validators.pattern(/^([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9.-]+)\\.([a-zA-Z]{2,6})$/)]
@@ -46,19 +42,15 @@ export class Login{
     })
   });
 
-
   protected login() {
 
-    this.user= {name: this.loginForm.controls.username.getRawValue(),
+    this.user= {name: "",
       email: this.loginForm.controls.email.getRawValue(),
       password: this.loginForm.controls.password.getRawValue()}
-    console.log(this.user.name)
-    console.log(this.user.email)
-    console.log(this.user.password)
-    this.userService.createUser(this.user).subscribe({
+    this.userService.findByEmail(this.user.email).subscribe({
       next: (userGuardado) => {
+        if(userGuardado.password)
         this.sessionService.saveUser(userGuardado);
-        //this.router.navigate(['/home']);
         this.router.navigate(['/']);
       },
       error: (err) => console.error(err)

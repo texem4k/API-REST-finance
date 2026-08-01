@@ -17,7 +17,9 @@ export class UserService {
     return this.http.get<User[]>(`${this.baseUrl}/userlist`);
   }
 
-  findById(id: string): Observable<User> {
-    return this.http.get<User>(`${this.baseUrl}/${id}`);
+  findByEmail(email: string): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/user-email`, {
+      params: { email }
+    });
   }
 }

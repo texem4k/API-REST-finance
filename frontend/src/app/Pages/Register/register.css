@@ -1,0 +1,16 @@
+body{
+  padding:1rem;
+}
+
+.title {
+  text-align: center;
+}
+
+
+.registerForm{
+  background-color: cadetblue;
+  border-radius: 2%;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+}

@@ -16,26 +16,35 @@
 
 
           <div class="buttons">
-                <button (click)="goToLogin()">Registrarse</button>
+                <button (click)="goToRegister()">Registrarse</button>
                 <button>Iniciar sesión</button>
           </div>
 
 
             <div class="sections">
-                <section class="usersSection">
+              <section class="usersSection">
+                <h3>Todos los usuarios registrados:</h3>
+                @for(u of users; track $index){
+                  @if(u==this.currentUser){
+                    <p>Nombre: {{u.name}}, Correo electrónico: {{u.email}} (Usted)</p>
+                  }
+                  @else{
+                    <p>Nombre: {{u.name}}, Correo electrónico: {{u.email}}</p>
+                  }
+                }
+                <table class="users"></table>
+              </section>
 
-                    <h3>Todos los usuarios registrados:</h3>
-                    <p></p>
-                    <table class="users"></table>
+              <section class="transactionSection">
 
-                </section>
-
-                <section class="transactionSection">
-
-                    <h3>Todas tus transacciones:</h3>
-                    <p></p>
-                    <table class="transactions"></table>
-                </section>
+                <h3>Todas tus transacciones:</h3>
+                @if(!this.sessionService.isSesionActive()){
+                  <p>Inicia sesión para poder ver tus transacciones</p>
+                }
+                @else{
+                  <table class="transactions"></table>
+                }
+              </section>
             </div>
 
         </main>

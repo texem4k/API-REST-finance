@@ -18,8 +18,7 @@ export class Index implements OnInit {
   users: User[] | undefined;
   transactions: Transaction[] | undefined;
   private router = inject(Router)
-  private sessionService = inject(SessionService);
-  //private router = inject(Router)
+  protected sessionService = inject(SessionService);
 
   currentUser: User | undefined;
 
@@ -29,5 +28,10 @@ export class Index implements OnInit {
 
   protected goToLogin() {
     this.router.navigate(['/Login']);
+  }
+
+  protected goToRegister() {
+    this.router.navigate(['/Register']);
+
   }
 }
