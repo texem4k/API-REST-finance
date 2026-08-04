@@ -4,6 +4,7 @@ import {Transaction} from '../../Model/Transaction';
 import {CommonModule} from '@angular/common';
 import {Router} from '@angular/router';
 import {SessionService} from '../../service/sessionService';
+import {UserService} from '../../service/userService';
 
 @Component({
   selector: 'app-home',
@@ -19,11 +20,18 @@ export class Index implements OnInit {
   transactions: Transaction[] | undefined;
   private router = inject(Router)
   protected sessionService = inject(SessionService);
+  protected userService = inject(UserService);
 
   currentUser: User | undefined;
 
   ngOnInit(): void {
     this.currentUser = this.sessionService.getUser();
+    this.userService.getUsers().subscribe({
+      next: (users) => {
+        this.users = users
+      },
+    })
+    console.log(this.users);
   }
 
   protected goToLogin() {
@@ -33,5 +41,10 @@ export class Index implements OnInit {
   protected goToRegister() {
     this.router.navigate(['/Register']);
 
+  }
+
+  protected logOut() {
+    this.sessionService.logOut();
+    this.router.navigate(['/']);
   }
 }

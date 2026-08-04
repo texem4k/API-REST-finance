@@ -22,4 +22,11 @@ export class UserService {
       params: { email }
     });
   }
+
+  loginUser(email:string, password: string): Observable<User>{
+    return this.http.get<User>(`${this.baseUrl}/login`, {
+      params: { email, password }
+    });
+
+  }
 }

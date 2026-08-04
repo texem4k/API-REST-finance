@@ -5,22 +5,24 @@
 
         <main>
 
+          @if(sessionService.isSesionActive()){
+            <h2 class="title">Bienvenido, {{currentUser!.name}}</h2>
+          }
+          @else{
+            <h2 class="title">Bienvenido, registrate o inicia sesión para realizar operaciones</h2>
 
-            @if(currentUser){
-              <h2 class="title">Bienvenido, {{currentUser.name}}</h2>
-            }
-            @else{
-              <h2 class="title">Bienvenido, registrate o inicia sesión para realizar operaciones</h2>
-
-            }
-
+          }
 
           <div class="buttons">
-                <button (click)="goToRegister()">Registrarse</button>
-                <button>Iniciar sesión</button>
+            @if(sessionService.isSesionActive()){
+              <button (click)="logOut()">Cerrar sesión</button>
+            } @else {
+              <button (click)="goToRegister()">Registrarse</button>
+              <button (click)="goToLogin()">Iniciar sesión</button>
+            }
+
+
           </div>
-
-
             <div class="sections">
               <section class="usersSection">
                 <h3>Todos los usuarios registrados:</h3>

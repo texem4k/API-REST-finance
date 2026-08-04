@@ -23,7 +23,6 @@ export class Login implements OnInit {
   user: User | undefined;
 
     ngOnInit(): void {
-        throw new Error("Method not implemented.");
     }
 
   loginForm = new FormGroup({
@@ -47,14 +46,12 @@ export class Login implements OnInit {
     this.user= {name: "",
       email: this.loginForm.controls.email.getRawValue(),
       password: this.loginForm.controls.password.getRawValue()}
-    this.userService.findByEmail(this.user.email).subscribe({
+    this.userService.loginUser(this.user.email, this.user.password).subscribe({
       next: (userGuardado) => {
-        if(userGuardado.password)
         this.sessionService.saveUser(userGuardado);
         this.router.navigate(['/']);
       },
       error: (err) => console.error(err)
     });
-
   }
 }

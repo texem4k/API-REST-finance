@@ -20,6 +20,6 @@ export class SessionService {
   }
 
   isSesionActive(): boolean {
-    return this.getUser() !== null;
+    return this.getUser() !== undefined;
   }
 }
