@@ -51,7 +51,8 @@ export class Register {
 
     this.user= {name: this.registerForm.controls.username.getRawValue(),
       email: this.registerForm.controls.email.getRawValue(),
-      password: this.registerForm.controls.password.getRawValue()}
+      password: this.registerForm.controls.password.getRawValue(),
+    transactions:[]}
     console.log(this.user.name)
     console.log(this.user.email)
     console.log(this.user.password)

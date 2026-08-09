@@ -21,9 +21,20 @@ export class Login implements OnInit {
   private userService = inject(UserService);
   private router = inject(Router);
   user: User | undefined;
+  resetPassword = false;
 
-    ngOnInit(): void {
-    }
+  ngOnInit(): void {
+  }
+
+  recoverPasswordForm = new FormGroup({
+    newPassword: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+\[\]{}|\\:;"'<>,.?\/]).+$/)]
+    }),
+    newPassword1: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email, Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+\[\]{}|\\:;"'<>,.?\/]).+$/)]
+    })});
 
   loginForm = new FormGroup({
     email: new FormControl('', {
@@ -42,16 +53,16 @@ export class Login implements OnInit {
   });
 
   protected login() {
-
-    this.user= {name: "",
-      email: this.loginForm.controls.email.getRawValue(),
-      password: this.loginForm.controls.password.getRawValue()}
-    this.userService.loginUser(this.user.email, this.user.password).subscribe({
+    this.userService.loginUser(this.loginForm.controls.email.getRawValue(), this.loginForm.controls.password.getRawValue()).subscribe({
       next: (userGuardado) => {
         this.sessionService.saveUser(userGuardado);
         this.router.navigate(['/']);
       },
       error: (err) => console.error(err)
     });
+  }
+
+  protected changePassword() {
+
   }
 }

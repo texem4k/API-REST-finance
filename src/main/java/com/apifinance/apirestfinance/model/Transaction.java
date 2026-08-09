@@ -1,5 +1,6 @@
 package com.apifinance.apirestfinance.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -27,6 +28,7 @@ public class Transaction {
     private TransactionType type;
 
     @ManyToOne(optional = false)
+    @JsonBackReference
     @JoinColumn(name = "user_id", nullable = false)
     private User owner;
 

@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -30,8 +31,8 @@ public class UserController {
     }
 
     @GetMapping("/userlist")
-    public Page<User> getAllUsers() {
-        return userService.findAllUsers(pageable);
+    public List<User> getAllUsers() {
+        return userService.findAllUsers(pageable).get().toList();
     }
 
     @GetMapping("/user-id")

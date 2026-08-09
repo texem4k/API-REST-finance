@@ -26,6 +26,7 @@
             <div class="sections">
               <section class="usersSection">
                 <h3>Todos los usuarios registrados:</h3>
+                <br>
                 @for(u of users; track $index){
                   @if(u==this.currentUser){
                     <p>Nombre: {{u.name}}, Correo electrónico: {{u.email}} (Usted)</p>
@@ -34,17 +35,19 @@
                     <p>Nombre: {{u.name}}, Correo electrónico: {{u.email}}</p>
                   }
                 }
-                <table class="users"></table>
               </section>
 
               <section class="transactionSection">
 
                 <h3>Todas tus transacciones:</h3>
+                <br>
                 @if(!this.sessionService.isSesionActive()){
                   <p>Inicia sesión para poder ver tus transacciones</p>
                 }
                 @else{
-                  <table class="transactions"></table>
+                  @for(u of currentUser?.transactions; track $index){
+                    <p>Título: {{u.name}}, Cantidad: {{u.amount}}, Tipo de operación: {{u.transactionType}}</p>
+                  }
                 }
               </section>
             </div>

@@ -24,6 +24,21 @@
     <button class="actionButton" type="submit"> Iniciar sesión
     </button>
   </form>
+
+  <button (click)="resetPassword=true">Contraseña olvidada</button>
+
+  @if(resetPassword){
+    <form [formGroup]="recoverPasswordForm" (ngSubmit)="changePassword()">
+      <p>Correo electrónico</p>
+      <input
+        type="password"
+        name="newPasssword"
+        [formControl]="recoverPasswordForm.controls[newPassword1]"
+        placeholder="example@example.com"
+      >
+    </form>
+  }
+
 </div>
 
 </body>
