@@ -27,6 +27,11 @@ export class UserService {
     return this.http.get<User>(`${this.baseUrl}/login`, {
       params: { email, password }
     });
+  }
 
+  changePassword(email:string, newPassword:string): Observable<User>{
+    return this.http.get<User>(`${this.baseUrl}/changePassword`, {
+      params: { email, newPassword }
+    });
   }
 }

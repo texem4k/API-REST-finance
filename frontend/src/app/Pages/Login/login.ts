@@ -34,7 +34,12 @@ export class Login implements OnInit {
     newPassword1: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required, Validators.email, Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+\[\]{}|\\:;"'<>,.?\/]).+$/)]
-    })});
+    }),
+    email: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email, Validators.pattern(/^([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9.-]+)\\.([a-zA-Z]{2,6})$/)]
+    }),
+  });
 
   loginForm = new FormGroup({
     email: new FormControl('', {
@@ -63,6 +68,14 @@ export class Login implements OnInit {
   }
 
   protected changePassword() {
-
+    if (this.recoverPasswordForm.controls.newPassword.getRawValue() == this.recoverPasswordForm.controls.newPassword1.getRawValue()) {
+      this.userService.changePassword(this.recoverPasswordForm.controls.email.getRawValue(), this.recoverPasswordForm.controls.newPassword.getRawValue()).subscribe({
+        next: (userGuardado) => {
+          this.sessionService.saveUser(userGuardado);
+          this.router.navigate(['/']);
+        },
+        error: (err) => console.error(err)
+      });
+    }
   }
 }

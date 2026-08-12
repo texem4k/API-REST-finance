@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -50,7 +49,7 @@ public class UserService {
         return Validations.validateName(name) && Validations.validateEmail(email) && Validations.validatePassword(password);
     }
 
-    public User login(String email, String passwordPlano) {
+    public User findUserByCredentials(String email, String passwordPlano) {
         User usuario = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario o contraseña incorrectos"));
 
@@ -59,5 +58,11 @@ public class UserService {
         }
 
         return usuario;
+    }
+
+    public User updatePassword(String email, String newPassword) {
+        User user = this.findUserByEmail(email);
+        user.setPasswordHash(SecurityConfig.passwordEncoder().encode(newPassword));
+        return userRepository.save(user);
     }
 }

@@ -9,7 +9,6 @@
     <p>Correo electrónico</p>
     <input
       type="email"
-      name="email"
       [formControl]="loginForm.controls['email']"
       placeholder="example@example.com"
     >
@@ -17,7 +16,6 @@
     <p>Contraseña</p>
     <input
       type="password"
-      name="password"
       [formControl]="loginForm.controls['password']"
     >
     <br><br>
@@ -31,11 +29,25 @@
     <form [formGroup]="recoverPasswordForm" (ngSubmit)="changePassword()">
       <p>Correo electrónico</p>
       <input
-        type="password"
-        name="newPasssword"
-        [formControl]="recoverPasswordForm.controls[newPassword1]"
+        type="email"
+        [formControl]="recoverPasswordForm.controls['email']"
         placeholder="example@example.com"
       >
+
+      <p>Nueva contraseña (Debe tener al menos 8 carácteres, un dígito y un carácter especial, y una mayúscula</p>
+      <input
+        type="password"
+        [formControl]="recoverPasswordForm.controls['newPassword']"
+      >
+
+      <p>Confirmar contraseña</p>
+      <input
+        type="password"
+        [formControl]="recoverPasswordForm.controls['newPassword1']"
+      >
+
+      <button class="actionButton" type="submit"> Cambiar contraseña
+      </button>
     </form>
   }
 

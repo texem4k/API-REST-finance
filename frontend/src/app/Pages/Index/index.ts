@@ -5,11 +5,12 @@ import {CommonModule} from '@angular/common';
 import {Router} from '@angular/router';
 import {SessionService} from '../../service/sessionService';
 import {UserService} from '../../service/userService';
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './index.html',
   styleUrl: './styles.css',
 })
@@ -23,6 +24,27 @@ export class Index implements OnInit {
   protected userService = inject(UserService);
 
   currentUser: User | undefined;
+
+  createTransactionForm = new FormGroup({
+    title: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(3), Validators.maxLength(32)]
+    }),
+    description: new FormControl('', {
+      validators: [
+        Validators.maxLength(64),
+      ]
+    }),
+    amount: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.min(0.01), Validators.max(99999)]
+    }),
+    transactionType: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.min(0.01), Validators.max(99999)]
+    }),
+
+  });
 
   ngOnInit(): void {
     this.currentUser = this.sessionService.getUser();
@@ -46,5 +68,19 @@ export class Index implements OnInit {
   protected logOut() {
     this.sessionService.logOut();
     this.router.navigate(['/']);
+  }
+
+  showForm = false;
+
+  openForm(): void {
+    this.showForm = true;
+  }
+
+  closeForm(): void {
+    this.showForm = false;
+  }
+
+  protected createTransaction() {
+
   }
 }

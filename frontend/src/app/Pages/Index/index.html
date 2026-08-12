@@ -16,10 +16,50 @@
           <div class="buttons">
             @if(sessionService.isSesionActive()){
               <button (click)="logOut()">Cerrar sesión</button>
+              <button (click)="openForm()">Crear transacción</button>
             } @else {
               <button (click)="goToRegister()">Registrarse</button>
               <button (click)="goToLogin()">Iniciar sesión</button>
             }
+
+            @if(showForm){
+              <div class="overlay" (click)="closeForm()">
+                <div class="modal" (click)="$event.stopPropagation()">
+                  <button class="cerrar" (click)="closeForm()">×</button>
+                  <h2>Crear transacción</h2>
+
+                  <form [formGroup]="createTransactionForm" (ngSubmit)="createTransaction()">
+                    <label>
+                      Título
+                      <input type="text" name="name" [formControl]="createTransactionForm.controls['title']">
+                    </label>
+
+                    <label>
+                      Descripción
+                      <input type="text" name="description" [formControl]="createTransactionForm.controls['description']">
+                    </label>
+
+                    <label>
+                      Cantidad
+                      <input type="number" name="amount" [formControl]="createTransactionForm.controls['amount']">
+                    </label>
+
+                    <h4>Debes seleccionar un tipo de transacción:</h4>
+                    <label for="expense">
+                      Gasto
+                      <input type="radio" id="expense" value="expense" name="transactionType" [formControl]="createTransactionForm.controls['transactionType']"/>
+                    </label>
+
+                    <label for="income">
+                      Ingreso
+                      <input type="radio" id="income" value="income" name="transactionType" [formControl]="createTransactionForm.controls['transactionType']"/>
+                    </label>
+
+
+                    <button type="submit">Confirmar transacción</button>
+                  </form>
+                </div>
+            </div>}
 
 
           </div>

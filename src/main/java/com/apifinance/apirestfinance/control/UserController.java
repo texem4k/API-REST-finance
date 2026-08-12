@@ -4,7 +4,6 @@ import com.apifinance.apirestfinance.control.requests.UserRequest;
 import com.apifinance.apirestfinance.model.User;
 import com.apifinance.apirestfinance.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +46,12 @@ public class UserController {
 
     @GetMapping("/login")
     public User login(@RequestParam String email, @RequestParam String password) {
-        return userService.login(email, password);
+        return userService.findUserByCredentials(email, password);
+    }
+
+    @GetMapping("changePassword")
+    public User updatePassword(@RequestParam String email, @RequestParam String newPassword) {
+        return userService.updatePassword(email, newPassword);
     }
 
 }
